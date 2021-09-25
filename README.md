@@ -13,7 +13,7 @@ sudo apt install ros-<distro>-realtime-tools ros-<distro>-hardware-interface
 
 ## Documentation
 
-- Use [iiwa_bringup](/iiwa_bringup/README.md) to launch the KUKA iiwa robot visulization in Rviz.
+- Use [iiwa_bringup](/iiwa_bringup/) to launch the KUKA iiwa robot visulization in Rviz.
 
 ## Reference
 
