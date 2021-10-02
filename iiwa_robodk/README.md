@@ -1,5 +1,7 @@
 # RoboDK Driver for KUKA iiwa robots
 
+This folder has nothing to do with ROS.
+
 ## Prerequisite
 
 ### Handguiding Project Setup
@@ -78,10 +80,10 @@ If you desire to implement your enabling switch on your end effector you will ne
 
 ## Setup RoboDK
 
-1. Deploy the [DriverRoboDK.java](/Sunrise/DriverRoboDK.java) to the Sunrise Controller
+1. Deploy the [DriverRoboDK.java](/iiwa_robodk/Sunrise/DriverRoboDK.java) to the Sunrise Controller
 2. Load the RoboDK Driver from RoboDK
-   * If no driver exists, copy the [apikukaiiwa.py](/RoboDK/apikukaiiwa.py) to RoboDK installation directory
-3. Open [example.rdk](/example.rdk) from RoboDK or add a new program with a Pause Instruction, you can rename it to e.g. HandGuiding
+   * If no driver exists, copy the [apikukaiiwa.py](/iiwa_robodk/RoboDK/apikukaiiwa.py) to RoboDK installation directory
+3. Open [example.rdk](/iiwa_robodk/example.rdk) from RoboDK or add a new program with a Pause Instruction, you can rename it to e.g. HandGuiding
 4. Right-click the program and select "Run on Robot"
 5. Run the DriverRoboDK Application on KUKA controller from the SmartPad
 6. Connect the Robot from RoboDK, run the Pause Instruction
