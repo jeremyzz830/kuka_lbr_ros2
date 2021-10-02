@@ -230,7 +230,7 @@ is as follows:
   be ensured that the defined ESM state always assures a sufficient
   degree of safety, regardless of the time or place of activation.*
 
-Troubleshooting
+## Troubleshooting
 
 Read through the manual for your specific Sunrise version. Each version has a slightly different way of running the handguiding feature during application runtime. For example, in 1.14 if you motion the robot to a position and then command a handguiding motion, the robot will only allow handguiding motion after you push the enabling switch + press the play button on the pendant. However, if you have the enabling switch pressed before you hit the handguiding motion line in code, you will be able to transition into handguiding without pressing play on the SmartPad.
 
