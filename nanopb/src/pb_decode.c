@@ -13,8 +13,8 @@
     #define checkreturn __attribute__((warn_unused_result))
 #endif
 
-#include <nanopb/pb.h>
-#include <nanopb/pb_decode.h>
+#include <pb.h>
+#include <pb_decode.h>
 
 /**************************************
  * Declarations internal to this file *

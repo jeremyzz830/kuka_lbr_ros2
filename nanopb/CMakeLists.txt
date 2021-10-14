@@ -19,7 +19,7 @@ add_library(nanopb
 if(MSVC)
     target_compile_options(nanopb
         PRIVATE
-            -DPB_SYSTEM_HEADER=<nanopb/pb_syshdr_win.h>
+            -DPB_SYSTEM_HEADER=<pb_syshdr_win.h>
             -DPB_FIELD_16BIT
             -DWIN32
             -DHAVE_STDINT_H
@@ -31,7 +31,7 @@ else()
             -O2
             -Wall
             -DHAVE_SOCKLEN_T
-            -DPB_SYSTEM_HEADER=<nanopb/pb_syshdr.h>
+            -DPB_SYSTEM_HEADER=<pb_syshdr.h>
             -DPB_FIELD_16BIT
             -DHAVE_STDINT_H
             -DHAVE_STDDEF_H
@@ -50,6 +50,7 @@ target_include_directories(nanopb
 
 # Export for downstream usage, see https://docs.ros.org/en/foxy/Guides/Ament-CMake-Documentation.html
 ament_export_targets(nanopbTargets HAS_LIBRARY_TARGET)
+ament_export_include_directories(include)
 
 install(
     DIRECTORY include/
