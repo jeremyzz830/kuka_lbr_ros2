@@ -53,11 +53,11 @@ def generate_launch_description():
             output='screen',
             parameters=[{'use_sim_time': use_sim_time}],
             arguments=[urdf]),
-        # launch_ros.actions.Node(
-        #    package='joint_state_publisher',
-        #    node_executable='joint_state_publisher',
-        #    output='screen',
-        #    arguments=[urdf],
-        #    parameters=[{'use_gui': True}]),
+        launch_ros.actions.Node(
+           package='joint_state_publisher',
+           executable='joint_state_publisher',
+           output='screen',
+           arguments=[urdf],
+           parameters=[{'use_gui': True}]),
 
     ])

@@ -8,7 +8,7 @@ endif()
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -21,8 +21,8 @@ find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED) 
 
-add_executable(dummy_joint_states src/dummy_joint_states.cpp)
-ament_target_dependencies(dummy_joint_states rclcpp sensor_msgs)
+add_executable(dummy_joint_states_publisher src/dummy_joint_states_publisher.cpp)
+ament_target_dependencies(dummy_joint_states_publisher rclcpp sensor_msgs)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -33,12 +33,12 @@ endif()
 # Install
 ################################################################################
 install(
-  DIRECTORY rviz urdf scripts meshes launch
+  DIRECTORY rviz urdf scripts meshes config launch
   DESTINATION share/${PROJECT_NAME}
 )
 
 install(TARGETS
-  dummy_joint_states
+  dummy_joint_states_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
 
