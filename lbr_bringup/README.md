@@ -21,14 +21,14 @@ $ sudo apt install ros-<distro>-joint-state-publisher-gui
 To visualize the URDF model of the robot in Rviz, you need two terminals and run the following commands:
 
 ```
-$ ros2 launch iiwa_bringup rviz.launch.py
+$ ros2 launch lbr_bringup rviz.launch.py
 ```
 
 ```
-$ ros2 run iiwa_bringup keyboard_teleop.py
+$ ros2 run lbr_bringup keyboard_teleop.py
 ```
 OR
 ```
-$ ros2 run iiwa_bringup dummy_joint_states
+$ ros2 run lbr_bringup dummy_joint_states
 ```
 The latter will run a dummy joint state publisher which publishes fake data for the joints which are not fixed. This is necessary to properly visualize the manipulator.

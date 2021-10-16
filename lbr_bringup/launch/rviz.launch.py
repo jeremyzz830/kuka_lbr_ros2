@@ -27,15 +27,17 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     rviz_config_dir = os.path.join(
-            get_package_share_directory('iiwa_bringup'),
+            get_package_share_directory('lbr_bringup'),
             'rviz',
-            'tf3.rviz')
+            'iiwa.rviz')
 
     urdf_file_name = 'iiwa7.urdf'
     urdf = os.path.join(
-        get_package_share_directory('iiwa_bringup'),
+        get_package_share_directory('lbr_bringup'),
         'urdf',
         urdf_file_name)
+    with open(urdf, 'r') as infp:
+        robot_desc = infp.read()
 
 
     return LaunchDescription([
@@ -51,13 +53,12 @@ def generate_launch_description():
             executable="robot_state_publisher",
             name="robot_state_publisher",
             output='screen',
-            parameters=[{'use_sim_time': use_sim_time}],
+            parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
             arguments=[urdf]),
-        # launch_ros.actions.Node(
-        #    package='joint_state_publisher',
-        #    node_executable='joint_state_publisher',
-        #    output='screen',
-        #    arguments=[urdf],
-        #    parameters=[{'use_gui': True}]),
+        launch_ros.actions.Node(
+           package='joint_state_publisher',
+           executable='joint_state_publisher',
+           arguments=[urdf],
+           output='screen'),
 
     ])
