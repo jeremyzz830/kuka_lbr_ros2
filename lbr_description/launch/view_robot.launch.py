@@ -21,7 +21,7 @@ def generate_launch_description():
 
     launch_args.append(DeclareLaunchArgument(
         name='description_file',
-        default_value='urdf/med7/med7.urdf.xacro',
+        default_value='iiwa7/iiwa7.urdf.xacro',
         description='Path to URDF file, relative to description_package.'
     ))
 
@@ -54,8 +54,7 @@ def generate_launch_description():
         [
             FindExecutable(name="xacro"), " ",
             PathJoinSubstitution(
-                [FindPackageShare(LaunchConfiguration('description_package')), LaunchConfiguration('description_file')]
-            ), " ",
+                [FindPackageShare(LaunchConfiguration('description_package')), "urdf", LaunchConfiguration('description_file')]), " ",
             "origin_xyz:=", LaunchConfiguration('origin_xyz'), " ",
             "origin_rpy:=", LaunchConfiguration('origin_rpy'), " ",
             "robot_name:=", LaunchConfiguration('robot_name')

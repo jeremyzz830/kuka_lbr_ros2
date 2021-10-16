@@ -27,13 +27,13 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
     rviz_config_dir = os.path.join(
-            get_package_share_directory('lbr_bringup'),
-            'rviz',
-            'iiwa.rviz')
+            get_package_share_directory('lbr_description'),
+            'config',
+            'config.rviz')
 
     urdf_file_name = 'iiwa7.urdf'
     urdf = os.path.join(
-        get_package_share_directory('lbr_bringup'),
+        get_package_share_directory('lbr_description'),
         'urdf',
         urdf_file_name)
     with open(urdf, 'r') as infp:
