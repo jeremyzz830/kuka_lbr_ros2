@@ -64,8 +64,10 @@ def generate_launch_description():
         package="controller_manager",
         executable="ros2_control_node",
         parameters=[robot_description, controller_configurations],
-        output="screen",
-        condition=UnlessCondition(LaunchConfiguration("sim"))
+        output={
+            "stdout": "screen",
+            "stderr": "screen",
+        },
     )
 
     robot_state_publisher = Node(
@@ -75,22 +77,22 @@ def generate_launch_description():
         parameters=[robot_description]
     )
 
-    joint_state_broadcaster = Node(
+    joint_state_broadcaster_spawner = Node(
         package="controller_manager",
-        executable="spawner.py",
+        executable="spawner",
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
 
-    controller = Node(
+    robot_controller_spawner = Node(
         package="controller_manager",
-        executable="spawner.py",
-        arguments=[LaunchConfiguration("controller"), "--controller-manager", "/controller_manager"],
+        executable="spawner",
+        arguments=[LaunchConfiguration("controller"), "-c", "/controller_manager"],
     )
 
     return LaunchDescription(
         launch_args + [
             controller_manager,
             robot_state_publisher,
-            joint_state_broadcaster,
-            controller
+            joint_state_broadcaster_spawner,
+            robot_controller_spawner
     ])

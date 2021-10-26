@@ -31,6 +31,21 @@ A ROS2 package for controlling KUKA iiwa
    source install/setup.bash
    ```
 
+5. To check that robot descriptions are working properly use following launch commands:
+   ```
+   ros2 launch lbr_description view_robot.launch.py # or use: view_robot_bigss.launch.py
+   ```
+
+6. To start the robot controller, open a terminal, source your ROS2-workspace and execute the launch file with:
+   ```
+   ros2 launch lbr_bringup lbr_bringup.launch.py model:=iiw7 sim:=true # model:=[iiwa7/iiwa14/med7/med14]
+   ```
+   For execution on the real robot, the steps in Real Setup are to be followed. Once the controller is set up, run the LBRServer app on the KUKA smartPAD. Once running, establish a connection via
+   ```
+   ros2 launch lbr_bringup lbr_bringup.launch.py model:=iiwa7 sim:=false # model:=[iiwa7/iiwa14/med7/med14]
+   ```
+
+
 ## Using MoveIt
 
 To use MoveIt:

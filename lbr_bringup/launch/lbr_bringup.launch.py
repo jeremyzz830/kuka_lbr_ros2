@@ -17,11 +17,14 @@ def launch_setup(context, *args, **kwargs):
     # Load robot description
     robot_description_content = Command(
         [
-            FindExecutable(name="xacro"), " ",
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
             PathJoinSubstitution(
                 [FindPackageShare("lbr_description"), "urdf/{}/{}.urdf.xacro".format(model, model)]
-            ), " ",
-            "robot_name:=", LaunchConfiguration("robot_name"), " ",
+            ),
+            " ",
+            "robot_name:=", LaunchConfiguration("robot_name"),
+            " ",
             "sim:=", LaunchConfiguration("sim")
         ]
     )
