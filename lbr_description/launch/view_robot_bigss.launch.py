@@ -56,8 +56,8 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time, 'robot_description': robot_desc}],
             arguments=[urdf]),
         launch_ros.actions.Node(
-           package='joint_state_publisher',
-           executable='joint_state_publisher',
+           package='joint_state_publisher_gui',
+           executable='joint_state_publisher_gui',
            arguments=[urdf],
            output='screen'),
 
