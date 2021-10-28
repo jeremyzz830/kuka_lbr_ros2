@@ -8,7 +8,7 @@ In addition to the main application, ROS2Application, the package include the fo
 - lbr_sensor_reader
 - lbr_status_reader
 
-The Javadocs of the package can be found at https://ninamwa.github.io/kmriiwa_ws/
+The Javadocs of the package can be found at https://jhu-bigss.github.io/kuka_lbr_ros2
 
 The connection type (UDP/TCP) and port can be set for each node in the KMRiiwaSunriseApplication. 
 The IP address to the remote computer must be defined in either of the TCPSocket or UDPsocket classes, depending on the choice of protocol. 
