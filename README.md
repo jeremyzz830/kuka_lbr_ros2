@@ -61,7 +61,7 @@ sudo apt install ros-galactic-moveit
 
 ## Documentation
 
-- Use [iiwa_bringup](/iiwa_bringup/) to launch the KUKA iiwa robot visulization in Rviz.
+- Use [lbr_bringup](/lbr_bringup/) to launch the KUKA iiwa robot visulization in Rviz.
 
 ## Reference
 
