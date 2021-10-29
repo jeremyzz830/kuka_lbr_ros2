@@ -1,0 +1,94 @@
+body { 
+	color: #222;
+	font-size: 13px;
+	font-family: Arial, sans-serif;
+	line-height: 20px; 
+}
+a:link {
+	color: #333;
+	font-weight: bold; 
+}
+a:visited {
+	color: #666;
+	font-weight: bold; 
+}
+a:hover {
+	color: #000;
+	font-weight: bold; 
+}
+a:active {
+	color: #000;
+	font-weight: bold; 
+}
+h1, h1 a:link, h1 a:visited, h1 a:hover, h1 a:active {
+	color: #FF7200;
+	font-size: 24px;
+	margin-bottom: 14px;
+}
+h2, h2 a:link, h2 a:visited, h2 a:hover, h2 a:active {
+	color: #FF7200;
+	font-size: 20px;
+	margin: 30px 0 10px 0;
+}
+h3, h3 a:link, h3 a:visited, h3 a:hover, h3 a:active {
+	color: #FF7200;
+	font-size: 16px;
+	margin-bottom: 8px;
+}
+h4, h4 a:link, h4 a:visited, h4 a:hover, h4 a:active {
+	color: #FF7200;
+	font-size: 13px;
+	margin-bottom: 6px;
+}
+center {
+	text-align: left;
+}
+hr {
+	background-color: #FF7200;
+	border: none;
+	height: 1px; 
+	/* display: none;*/
+}
+ul, ol {
+	color:#222;
+	padding: 0px 0 0 15px;
+	margin-top: 0px;
+}
+ul, li {
+	list-style: square;
+}
+p {
+	margin-bottom: 0px;
+}
+img {
+	margin-top: 10px;
+}
+dl, dd, pre, code, blockquote {
+	margin-left: 0px;
+}
+pre, code, dl {
+	font-size: 13px;
+	margin-top: 0px
+}
+td, tr,th,tbody, table{
+	border-color: #e3e3e3;
+}
+th {
+	font-size: 13px
+}
+/* Table colors */
+.TableHeadingColor     { background: #FFFFFF; color:#FF7200; border:1px solid } /* Dark mauve */
+.TableSubHeadingColor  { background: #FFFFFF; color:#222; border:1px solid } /* Light mauve */
+.TableRowColor         { background: #FFFFFF; color:#222; border:1px solid } /* White */
+/* Font used in left-hand frame lists */
+.FrameTitleFont   { font-family:  Arial, sans-serif; color:#000000 }
+.FrameHeadingFont { font-family:  Arial, sans-serif; color:#000000 }
+.FrameItemFont    { font-family:  Arial, sans-serif; color:#000000 }
+/* Navigation bar fonts and colors */
+.NavBarCell1    { background-color:#e3e3e3; color:green; border: none;} /* Light mauve */
+.NavBarCell1Rev { background-color:#ff7300; color:#FFFFFF; border: none;} /* Dark Blue */
+.NavBarFont1    { font-family: Arial, sans-serif; color:#000000;color:#000000;  border: none;}
+.NavBarFont1Rev { font-family: Arial, sans-serif; color:#FFFFFF;color:#FFFFFF;  border: none;}
+.NavBarCell2    { font-family: Arial, sans-serif; background-color:#FFFFFF; color:#000000}
+.NavBarCell3    { font-family: Arial, sans-serif; background-color:#FFFFFF; color:#000000}
+
