@@ -1,0 +1,5 @@
+lbr_kst/JointPosition jp
+---
+bool success
+---
+bool feed
