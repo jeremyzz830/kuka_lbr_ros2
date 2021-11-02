@@ -1,7 +1,7 @@
 /* *********************** 
-* By Yihao Liu
+* By Yihao Liu, Joshua Liu
 * Johns Hopkins University
-* Updated Oct 25 2021
+* Updated 11/1/2021
 * 
 * MIT licence
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
@@ -11,19 +11,20 @@
 * 
 ************************** */
 
-#include <KSTServoing.hpp>
-#include <UtlFunctions.hpp>
-#include <UtlCalculations.hpp>
+#include "lbr_kst/KSTServoing.hpp"
+#include "lbr_kst/UtlFunctions.hpp"
+#include "lbr_kst/UtlCalculations.hpp"
 
 #include <math.h>
 #include <string>
 #include <sstream>
 #include <vector>
 #include <boost/lexical_cast.hpp>
-#include <ros/ros.h>
 
-#include <roskst_msgs/JointPosition.h>
-#include <geometry_msgs/TransformStamped.h>
+#include "rclcpp/rclcpp.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+
+#include "lbr_kst/msg/joint_position.hpp"
 
 inline bool check_acknowledgement(std::string msg)
 {	//TODO
@@ -33,9 +34,8 @@ inline bool check_acknowledgement(std::string msg)
 }
 
 // constructor
-KSTServoing::KSTServoing(std::string robot_ip, int robot_type, double h_flange, boost::asio::io_context& io_context, ros::NodeHandle& n) :
-	tcp_sock_(io_context),
-	n_(n)
+KSTServoing::KSTServoing(std::string robot_ip, int robot_type, double h_flange, boost::asio::io_context& io_context) :
+	tcp_sock_(io_context)
 {
 	ip_ = robot_ip;
 	data_dh_ = KSTServoing::utl_dh_parameters(robot_type);
@@ -260,7 +260,7 @@ std::vector<double> KSTServoing::servo_send_EEF_getfeedback(std::vector<double> 
 	return eefbk;
 }
 
-roskst_msgs::JointPosition KSTServoing::get_joint_position()
+lbr_kst::msg::JointPosition KSTServoing::get_joint_position()
 {
 	std::string strmsgr;
 	try
@@ -282,7 +282,7 @@ roskst_msgs::JointPosition KSTServoing::get_joint_position()
 	}
 	// ROS_INFO(strmsgr.c_str());
 	std::vector<double> vec = UtlFunctions::parseString2DoubleVec(strmsgr);
-	roskst_msgs::JointPosition jp;
+	lbr_kst::JointPosition jp;
 	jp.a1 = vec[0];
 	jp.a2 = vec[1];
 	jp.a3 = vec[2];
@@ -293,7 +293,7 @@ roskst_msgs::JointPosition KSTServoing::get_joint_position()
 	return jp;
 }
 
-geometry_msgs::TransformStamped KSTServoing::get_EEF_position()
+geometry_msgs::msg::TransformStamped KSTServoing::get_EEF_position()
 {
 	std::string strmsgr;
 	try

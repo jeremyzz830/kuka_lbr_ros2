@@ -1,7 +1,7 @@
 /* *********************** 
-* By Yihao Liu
+* By Yihao Liu, Joshua Liu
 * Johns Hopkins University
-* Updated Oct 25 2021
+* Updated 11/1/2021
 * 
 * MIT licence
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
@@ -11,27 +11,28 @@
 * 
 ************************** */
 
-#include <ros/ros.h>
+#include "lbr_kst/KSTServoingCmd.hpp"
+// #include "lbr_kst/KSTServoing.hpp"
 
-#include <KSTServoingCmd.hpp>
-#include <KSTServoing.hpp>
-
-#include <geometry_msgs/TransformStamped.h>
 
 #include <string>
-#include <actionlib/server/simple_action_server.h>
 
-#include <roskst_msgs/EEFCartesian.h>
-#include <roskst_msgs/JointPosition.h>
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
+#include "rclcpp_components/register_node_macro.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 
-#include <roskst_msgs/GetJoints.h>
-#include <roskst_msgs/GetEEF.h>
-#include <roskst_msgs/SmtSrvoStartEEF.h>
-#include <roskst_msgs/SmtSrvoStop.h>
+#include "lbr_kst/msg/joint_position.hpp"
+#include "lbr_kst/msg/eef_cartesian.hpp"
 
-#include <roskst_msgs/PTPJointSpaceAction.h>
-#include <roskst_msgs/PTPLineEEFAction.h>
-#include <roskst_msgs/NetiiwaCloseAction.h>
+#include "lbr_kst/srv/get_joints.hpp"
+#include "lbr_kst/srv/get_eef.hpp"
+#include "lbr_kst/srv/smt_servo_start_eef.hpp"
+#include "lbr_kst/srv/smt_servo_stop.hpp"
+
+#include "lbr_kst/action/ptp_joint_space.hpp"
+#include "lbr_kst/action/ptp_line_eef.hpp"
+#include "lbr_kst/action/netiiwa_close.hpp"
 
 KSTServoingCmd::KSTServoingCmd(KSTServoing& servo, ros::NodeHandle& n) : 
 	n_(n) ,

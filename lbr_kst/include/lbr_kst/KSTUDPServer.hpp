@@ -1,7 +1,7 @@
 /* *********************** 
-* By Yihao Liu
+* By Yihao Liu, Joshua Liu
 * Johns Hopkins University
-* Updated Oct 25 2021
+* Updated 11/1/2021
 * 
 * MIT licence
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
@@ -13,20 +13,21 @@
 
 #pragma once
 
-#include <actionlib/client/simple_action_client.h>
-
-#include <ros/ros.h>
-#include <std_msgs/String.h>
-#include <roskst_msgs/PTPLineEEFAction.h>
-#include <geometry_msgs/Point.h>
-#include <geometry_msgs/Point32.h>
-#include <geometry_msgs/Quaternion.h>
-#include <geometry_msgs/Pose.h>
-#include <sensor_msgs/PointCloud.h>
-
 #include <string>
 #include <boost/array.hpp>
 #include <boost/asio.hpp>
+
+#include "rclcpp/rclcpp.hpp"
+#include "rclcpp_action/rclcpp_action.hpp"
+#include "rclcpp_components/register_node_macro.hpp"
+#include "std_msgs/msg/string.hpp"
+#include "geometry_msgs/msg/point.hpp"
+#include "geometry_msgs/msg/point32.hpp"
+#include "geometry_msgs/msg/quaternion.hpp"
+#include "geometry_msgs/msg/pose.hpp"
+#include "sensor_msgs/msg/point_cloud.hpp"
+
+#include "lbr_kst/action/ptp_line_eef.hpp"
 
 using boost::asio::ip::udp;
 
@@ -36,7 +37,7 @@ class KSTUDPServer
 public:
 
 	// constructor and start receiving
-	KSTUDPServer(ros::NodeHandle& n, boost::asio::io_context& io_context);
+	KSTUDPServer(rcl::NodeHandle& n, boost::asio::io_context& io_context);
 
 private:
 
@@ -59,19 +60,18 @@ private:
 	void confirmMsg(std::string msg_cfrm);
 
 	// ros related members
-	ros::NodeHandle& n_;
-	ros::Publisher pubTest_;
-	ros::Publisher pubCommand_;
-	ros::Publisher pubSubCommand_;
-	ros::Publisher pubPointCloud_;
-	ros::Publisher pubPosQuatCntct_;
-	ros::Publisher pubPosQuatHdref_;
-	ros::Publisher pubPosQuatCnoff_;
-	ros::Publisher pub_EEFOldpos_;
+	rcl::Publisher pubTest_;
+	rcl::Publisher pubCommand_;
+	rcl::Publisher pubSubCommand_;
+	rcl::Publisher pubPointCloud_;
+	rcl::Publisher pubPosQuatCntct_;
+	rcl::Publisher pubPosQuatHdref_;
+	rcl::Publisher pubPosQuatCnoff_;
+	rcl::Publisher pub_EEFOldpos_;
 	actionlib::SimpleActionClient<roskst_msgs::PTPLineEEFAction> ac_PTPLineEEF_;
-	ros::ServiceClient cgeteef_;
-	ros::ServiceClient srv_client_stopSmtServo_;
-	ros::ServiceClient srv_client_startSmtServoEEF_;
+	rcl::ServiceClient cgeteef_;
+	rcl::ServiceClient srv_client_stopSmtServo_;
+	rcl::ServiceClient srv_client_startSmtServoEEF_;
 
 	// udp related memebrs
 	udp::socket socket_;

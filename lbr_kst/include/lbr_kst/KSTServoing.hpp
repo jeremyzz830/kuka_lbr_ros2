@@ -16,10 +16,10 @@
 #include <vector>
 #include <boost/asio.hpp>
 
-#include <rclcpp/rclcpp.hpp>
-#include <tf2/transform_datatypes.h>
-#include <tf2/LinearMath/Transform.h>
-#include <geometry_msgs/msg/transform_stamped.hpp>
+#include "rclcpp/rclcpp.hpp"
+#include "tf2/transform_datatypes.h"
+#include "tf2/LinearMath/Transform.h"
+#include "geometry_msgs/msg/transform_stamped.hpp"
 
 #include "lbr_kst/msg/joint_position.hpp"
 
@@ -72,7 +72,6 @@ struct KSTServoingDynamicsInverse{
 class KSTServoing{
 
 private:
-    ros::NodeHandle& n_;
 
     // connection
     std::string ip_;
@@ -96,7 +95,6 @@ public:
         int robot_type, 
         double h_flange, 
         boost::asio::io_context& io_context,
-        ros::NodeHandle& n
         );
     
     // PTP motion
@@ -115,8 +113,8 @@ public:
     std::vector<double> servo_send_EEF_getfeedback(std::vector<double> eef); // x y z rz ry rx
 
     // getters
-    roskst_msgs::JointPosition get_joint_position();
-    geometry_msgs::TransformStamped get_EEF_position();
+    lbr_kst::msg::JointPosition get_joint_position();
+    geometry_msgs::msg::TransformStamped get_EEF_position();
         
     // networking
     bool net_establish_connection();

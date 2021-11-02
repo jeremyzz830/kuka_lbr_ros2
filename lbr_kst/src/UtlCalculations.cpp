@@ -1,7 +1,7 @@
 /* *********************** 
-* By Yihao Liu
+* By Yihao Liu, Joshua Liu
 * Johns Hopkins University
-* Updated Oct 25 2021
+* Updated 11/1/2021
 * 
 * MIT licence
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
