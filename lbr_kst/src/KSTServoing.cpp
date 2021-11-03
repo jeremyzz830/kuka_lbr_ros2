@@ -12,19 +12,19 @@
 ************************** */
 
 #include "lbr_kst/KSTServoing.hpp"
-#include "lbr_kst/UtlFunctions.hpp"
-#include "lbr_kst/UtlCalculations.hpp"
 
 #include <math.h>
 #include <string>
-#include <sstream>
+#include <iostream>
 #include <vector>
+#include <unistd.h>
 #include <boost/lexical_cast.hpp>
 
-#include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 
 #include "lbr_kst/msg/joint_position.hpp"
+#include "lbr_kst/UtlFunctions.hpp"
+#include "lbr_kst/UtlCalculations.hpp"
 
 inline bool check_acknowledgement(std::string msg)
 {	//TODO
@@ -55,17 +55,20 @@ KSTServoing::KSTServoing(std::string robot_ip, int robot_type, double h_flange, 
 	// tcp::endpoint remote_endpoint = tcp::endpoint(tcp::v4(), 9877);
 	tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(robot_ip), 30001);
 	tcp_sock_.connect(remote_endpoint);
-	ros::Duration(1).sleep();
+	// ros::Duration(1).sleep();
+	rclcpp::Duration(1);
 
 	boost::system::error_code error;
 	const std::string msg1 = "TFtrans_0.0_0.0_0.0_0.0_0.0_0.0\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
-	ROS_INFO("Tool sent");
+	std::cout << "Tool sent";
 
 	size_t lenmsgr1 = tcp_sock_.read_some(boost::asio::buffer(buf_));
-	ros::Duration(0.5).sleep();
+	
+	// ros::Duration(0.5).sleep();
+	rclcpp::Duration(0.5);
 
-	ROS_INFO("Kuka command center (ROS side) initialized");
+	std::cout << "Kuka Servo Connection Established.";
 }
 
 bool KSTServoing::PTP_joint_space(std::vector<double> jpos , double relVel)
@@ -106,7 +109,7 @@ bool KSTServoing::PTP_joint_space(std::vector<double> jpos , double relVel)
 	}
 	catch(std::exception& e)
 	{
-		ROS_INFO("Command sending encountered problem");
+		std::cout << "Command sending encountered problem";
 		throw;
 	}
 }
@@ -143,7 +146,7 @@ bool KSTServoing::PTP_line_EEF(std::vector<double> epos, double vel)
 	}
 	catch(std::exception& e)
 	{
-		ROS_INFO("Command sending encountered problem");
+		std::cout << "Command sending encountered problem";
 		throw;
 	}
 } 
@@ -154,8 +157,7 @@ void KSTServoing::servo_direct_cartesian_start()
 	const std::string msg1 = "stDcEEf_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
-	ros::Duration(1.5).sleep();
-
+	usleep(1500);
 }
 
 void KSTServoing::servo_direct_joint_start()
@@ -164,7 +166,7 @@ void KSTServoing::servo_direct_joint_start()
 	const std::string msg1 = "startDirectServoJoints\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
-	ros::Duration(1.5).sleep();
+	usleep(1500);
 }
 
 void KSTServoing::servo_smart_cartesian_start()
@@ -173,7 +175,7 @@ void KSTServoing::servo_smart_cartesian_start()
 	const std::string msg1 = "stSmtSEEf_\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
-	ros::Duration(1.5).sleep();
+	usleep(1500);
 }
 
 void KSTServoing::servo_stop()
@@ -277,12 +279,12 @@ lbr_kst::msg::JointPosition KSTServoing::get_joint_position()
 	}
 	catch(std::exception& e)
 	{
-		ROS_INFO("Command sending encountered problem");
+		std::cout << "Command sending encountered problem";
 		throw;
 	}
-	// ROS_INFO(strmsgr.c_str());
+	// std::cout << strmsgr.c_str());
 	std::vector<double> vec = UtlFunctions::parseString2DoubleVec(strmsgr);
-	lbr_kst::JointPosition jp;
+	lbr_kst::msg::JointPosition jp;
 	jp.a1 = vec[0];
 	jp.a2 = vec[1];
 	jp.a3 = vec[2];
@@ -309,11 +311,11 @@ geometry_msgs::msg::TransformStamped KSTServoing::get_EEF_position()
 	}
 	catch(std::exception& e)
 	{
-		ROS_INFO("Command sending encountered problem");
+		std::cout << "Command sending encountered problem";
 		throw;
 	}
 	std::vector<double> vec = UtlFunctions::parseString2DoubleVec(strmsgr);
-	geometry_msgs::TransformStamped eef; 
+	geometry_msgs::msg::TransformStamped eef; 
 	eef.transform.translation.x = vec[0];
 	eef.transform.translation.y = vec[1];
 	eef.transform.translation.z = vec[2];
@@ -329,7 +331,7 @@ void KSTServoing::net_turnoff_server()
 	const std::string msg1 = "end\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 	tcp_sock_.close();
-	ROS_INFO("Robot server shuts down.");
+	std::cout << "Robot server shuts down.";
 }
 
 

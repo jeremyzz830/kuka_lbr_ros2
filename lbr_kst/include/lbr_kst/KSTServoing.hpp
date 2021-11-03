@@ -94,7 +94,7 @@ public:
         std::string robot_ip, 
         int robot_type, 
         double h_flange, 
-        boost::asio::io_context& io_context,
+        boost::asio::io_context& io_context
         );
     
     // PTP motion
