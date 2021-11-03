@@ -218,7 +218,7 @@ std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, s
     return std::make_tuple(U, S, V);
 }
 
-bool UtlCalculations::registerPntCloud(roskst_msgs::RegisterPntCloud::Request &req, roskst_msgs::RegisterPntCloud::Response &res)
+bool UtlCalculations::registerPntCloud(lbr_kst::RegisterPntCloud::Request &req, lbr_kst::RegisterPntCloud::Response &res)
 {
 	int sz1 = req.pcp.fidCloud.size();
 	int sz2 = req.pcp.digCloud.size();

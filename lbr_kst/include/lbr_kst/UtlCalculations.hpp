@@ -23,7 +23,7 @@
 
 namespace UtlCalculations{
 
-	bool registerPntCloud(roskst_msgs::RegisterPntCloud::Request &req, roskst_msgs::RegisterPntCloud::Response &res);
+	bool registerPntCloud(lbr_kst::RegisterPntCloud::Request &req, lbr_kst::RegisterPntCloud::Response &res);
 
 	inline std::vector<std::vector<double>> getZeros3by3();
 

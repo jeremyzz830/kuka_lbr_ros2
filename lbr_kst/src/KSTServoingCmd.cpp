@@ -34,12 +34,11 @@
 #include "lbr_kst/action/ptp_line_eef.hpp"
 #include "lbr_kst/action/netiiwa_close.hpp"
 
-KSTServoingCmd::KSTServoingCmd(KSTServoing& servo, ros::NodeHandle& n) : 
-	n_(n) ,
+KSTServoingCmd::KSTServoingCmd(KSTServoing& servo) : 
 	servo_(servo) ,
-	srv_action_PTPjs_(n_, "/TMSKuka/movePTPJointSpace", boost::bind(&KSTServoingCmd::move_PTPJointSpace, this, _1), false) , // spawn up PTP_joint_space action server
-	srv_action_PTPeef_(n_, "/TMSKuka/movePTPLineEEF", boost::bind(&KSTServoingCmd::move_PTPLineEEF, this, _1), false) ,
-	srv_action_Netcl_(n_, "/TMSKuka/rqstNetiiwaClose", boost::bind(&KSTServoingCmd::rqst_NetiiwaClose, this, _1), false)
+	srv_action_PTPjs_("/TMSKuka/movePTPJointSpace", boost::bind(&KSTServoingCmd::move_PTPJointSpace, this, _1), false) , // spawn up PTP_joint_space action server
+	srv_action_PTPeef_("/TMSKuka/movePTPLineEEF", boost::bind(&KSTServoingCmd::move_PTPLineEEF, this, _1), false) ,
+	srv_action_Netcl_("/TMSKuka/rqstNetiiwaClose", boost::bind(&KSTServoingCmd::rqst_NetiiwaClose, this, _1), false)
 {
 	srv_srvc_getjp_ = n_.advertiseService("/TMSKuka/GetJoints", &KSTServoingCmd::get_joints, this); // spawn up get_joints ros service server
 	srv_srvc_geteef_ = n_.advertiseService("/TMSKuka/GetEEF", &KSTServoingCmd::get_EEF, this);
@@ -55,22 +54,22 @@ KSTServoingCmd::KSTServoingCmd(KSTServoing& servo, ros::NodeHandle& n) :
 	ROS_INFO("Servers initialized");
 }
 
-bool KSTServoingCmd::get_joints(roskst_msgs::GetJoints::Request &req, roskst_msgs::GetJoints::Response &res)
+bool KSTServoingCmd::get_joints(lbr_kst::GetJoints::Request &req, lbr_kst::GetJoints::Response &res)
 {
-	roskst_msgs::JointPosition jp = servo_.get_joint_position();
+	lbr_kst::JointPosition jp = servo_.get_joint_position();
 	res.jp = jp;
 	return true;
 }
 
 
-bool KSTServoingCmd::get_EEF(roskst_msgs::GetEEF::Request &req, roskst_msgs::GetEEF::Response &res)
+bool KSTServoingCmd::get_EEF(lbr_kst::GetEEF::Request &req, lbr_kst::GetEEF::Response &res)
 {
 	geometry_msgs::TransformStamped eef = servo_.get_EEF_position();
 	res.eef = eef;
 	return true;
 }
 
-bool KSTServoingCmd::smtSrvo_startEEF(roskst_msgs::SmtSrvoStartEEF::Request &req, roskst_msgs::SmtSrvoStartEEF::Response &res)
+bool KSTServoingCmd::smtSrvo_startEEF(lbr_kst::SmtSrvoStartEEF::Request &req, lbr_kst::SmtSrvoStartEEF::Response &res)
 {
 	
 	servo_.servo_smart_cartesian_start();
@@ -85,7 +84,7 @@ bool KSTServoingCmd::smtSrvo_startEEF(roskst_msgs::SmtSrvoStartEEF::Request &req
 	return true;
 }
 
-bool KSTServoingCmd::smtSrvo_stop(roskst_msgs::SmtSrvoStop::Request &req, roskst_msgs::SmtSrvoStop::Response &res)
+bool KSTServoingCmd::smtSrvo_stop(lbr_kst::SmtSrvoStop::Request &req, lbr_kst::SmtSrvoStop::Response &res)
 {
 	servo_.servo_stop();
 
@@ -99,9 +98,9 @@ bool KSTServoingCmd::smtSrvo_stop(roskst_msgs::SmtSrvoStop::Request &req, roskst
 	return true;
 }
 
-void KSTServoingCmd::move_PTPJointSpace(const roskst_msgs::PTPJointSpaceGoalConstPtr& goal)
+void KSTServoingCmd::move_PTPJointSpace(const lbr_kst::PTPJointSpaceGoalConstPtr& goal)
 {
-	roskst_msgs::JointPosition jp = goal->jp;
+	lbr_kst::JointPosition jp = goal->jp;
 	std::vector<double> jpos{
 		jp.a1, 
 		jp.a2, 
@@ -117,9 +116,9 @@ void KSTServoingCmd::move_PTPJointSpace(const roskst_msgs::PTPJointSpaceGoalCons
 	srv_action_PTPjs_.setSucceeded(result_PTPjs_);
 }
 
-void KSTServoingCmd::move_PTPLineEEF(const roskst_msgs::PTPLineEEFGoalConstPtr& goal)
+void KSTServoingCmd::move_PTPLineEEF(const lbr_kst::PTPLineEEFGoalConstPtr& goal)
 {
-	roskst_msgs::EEFCartesian eef = goal->eef;
+	lbr_kst::EEFCartesian eef = goal->eef;
 	std::vector<double> eefpos{
 		eef.x,
 		eef.y,
@@ -135,7 +134,7 @@ void KSTServoingCmd::move_PTPLineEEF(const roskst_msgs::PTPLineEEFGoalConstPtr& 
 }
 
 
-void KSTServoingCmd::rqst_NetiiwaClose(const roskst_msgs::NetiiwaCloseGoalConstPtr& goal)
+void KSTServoingCmd::rqst_NetiiwaClose(const lbr_kst::NetiiwaCloseGoalConstPtr& goal)
 {
 
 	ROS_INFO("Turning off requested.");

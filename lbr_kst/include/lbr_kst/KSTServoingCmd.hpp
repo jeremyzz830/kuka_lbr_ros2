@@ -42,14 +42,14 @@ public:
 
 	KSTServoingCmd(KSTServoing& servo);
 	
-	void move_PTPJointSpace(const roskst_msgs::PTPJointSpaceGoalConstPtr& goal);
-	void move_PTPLineEEF(const roskst_msgs::PTPLineEEFGoalConstPtr& goal);
-	void rqst_NetiiwaClose(const roskst_msgs::NetiiwaCloseGoalConstPtr& goal);
+	void move_PTPJointSpace(const lbr_kst::action::PTPJointSpace_Goal::ConstPtr &goal);
+	void move_PTPLineEEF(const lbr_kst::action::PTPLineEEF_Goal::ConstPtr &goal);
+	void rqst_NetiiwaClose(const lbr_kst::action::NetiiwaClose_Goal::ConstPtr &goal);
 
-	bool get_joints(roskst_msgs::GetJoints::Request &req, roskst_msgs::GetJoints::Response &res);
-	bool get_EEF(roskst_msgs::GetEEF::Request &req, roskst_msgs::GetEEF::Response &res);
-	bool smtSrvo_startEEF(roskst_msgs::SmtSrvoStartEEF::Request &req, roskst_msgs::SmtSrvoStartEEF::Response &res);
-	bool smtSrvo_stop(roskst_msgs::SmtSrvoStop::Request &req, roskst_msgs::SmtSrvoStop::Response &res);
+	bool get_joints(lbr_kst::srv::GetJoints_Request &req, lbr_kst::srv::GetJoints_Response &res);
+	bool get_EEF(lbr_kst::srv::GetEEF_Request &req, lbr_kst::srv::GetEEF_Response &res);
+	bool smtSrvo_startEEF(lbr_kst::srv::SmtServoStartEEF_Request &req, lbr_kst::srv::SmtServoStartEEF_Response &res);
+	bool smtSrvo_stop(lbr_kst::srv::SmtServoStop_Request &req, lbr_kst::srv::SmtServoStop_Response &res);
 	bool getflg_TMSrealtimectl();
 	rclcpp::Publisher pub_oldeef_;
 

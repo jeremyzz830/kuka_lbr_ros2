@@ -68,7 +68,7 @@ private:
 	rcl::Publisher pubPosQuatHdref_;
 	rcl::Publisher pubPosQuatCnoff_;
 	rcl::Publisher pub_EEFOldpos_;
-	actionlib::SimpleActionClient<roskst_msgs::PTPLineEEFAction> ac_PTPLineEEF_;
+	actionlib::SimpleActionClient<lbr_kst::PTPLineEEFAction> ac_PTPLineEEF_;
 	rcl::ServiceClient cgeteef_;
 	rcl::ServiceClient srv_client_stopSmtServo_;
 	rcl::ServiceClient srv_client_startSmtServoEEF_;

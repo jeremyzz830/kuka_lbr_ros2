@@ -62,16 +62,16 @@ KSTUDPServer::KSTUDPServer(ros::NodeHandle& n, boost::asio::io_context& io_conte
 	socket_(io_context, udp::endpoint(udp::v4(), 8051)),
     socket_msgcfrm_(io_context)
 {
-	cgeteef_ = n_.serviceClient<roskst_msgs::GetEEF>("/TMSKuka/GetEEF");
-	srv_client_stopSmtServo_ = n_.serviceClient<roskst_msgs::SmtSrvoStop>("/TMSKuka/SmtSrvoStop");
-	srv_client_startSmtServoEEF_ = n_.serviceClient<roskst_msgs::SmtSrvoStartEEF>("/TMSKuka/SmtSrvoStartEEF");
+	cgeteef_ = n_.serviceClient<lbr_kst::GetEEF>("/TMSKuka/GetEEF");
+	srv_client_stopSmtServo_ = n_.serviceClient<lbr_kst::SmtSrvoStop>("/TMSKuka/SmtSrvoStop");
+	srv_client_startSmtServoEEF_ = n_.serviceClient<lbr_kst::SmtSrvoStartEEF>("/TMSKuka/SmtSrvoStartEEF");
 	socket_msgcfrm_.open(boost::asio::ip::udp::v4());
 	remote_endpoint_msgcfrm_ = udp::endpoint(udp::v4(), 8295);
     // remote_endpoint_msgcfrm_ = udp::endpoint(boost::asio::ip::address_v4::from_string(""), 8295);
 	pubTest_ = n_.advertise<std_msgs::String>("/TMSKuka/PubTest", 50);
 	pubCommand_ = n_.advertise<std_msgs::String>("/TMSKuka/PubCommand", 50);
 	pubSubCommand_ = n_.advertise<std_msgs::String>("/TMSKuka/PubSubCommand", 50);
-	pubPointCloud_ = n_.advertise<roskst_msgs::PointCloudPair>("/TMSKuka/PubPointCloud", 10);
+	pubPointCloud_ = n_.advertise<lbr_kst::PointCloudPair>("/TMSKuka/PubPointCloud", 10);
 	pubPosQuatCntct_ = n_.advertise<geometry_msgs::Pose>("/TMSKuka/PubPosQuatCntct", 10);
 	pubPosQuatHdref_ = n_.advertise<geometry_msgs::Pose>("/TMSKuka/PubPosQuatHdref", 10);
 	pubPosQuatCnoff_ = n_.advertise<geometry_msgs::Pose>("/TMSKuka/PubPosQuatCnoff", 10);
@@ -352,12 +352,12 @@ void KSTUDPServer::cmd_handle_calcutype()
             pubCommand_.publish(msgCommand_); ros::spinOnce();
             ROS_INFO("Register!");
 
-            roskst_msgs::PointCloudPair pcp;
+            lbr_kst::PointCloudPair pcp;
             pcp.fidCloud = msgPntCld_.points;
             pcp.digCloud = digPntCld_.points;
 
-            ros::ServiceClient srv_client_rpc = n_.serviceClient<roskst_msgs::RegisterPntCloud>("/TMSKuka/RegisterPntCloud");
-            roskst_msgs::RegisterPntCloud rpc;
+            ros::ServiceClient srv_client_rpc = n_.serviceClient<lbr_kst::RegisterPntCloud>("/TMSKuka/RegisterPntCloud");
+            lbr_kst::RegisterPntCloud rpc;
             rpc.request.pcp = pcp;
             if(srv_client_rpc.call(rpc))
             {
@@ -528,8 +528,8 @@ inline void KSTUDPServer::cmd_wrong_notify() // send to slicer: non-defined comm
 
 void KSTUDPServer::iiwaOffAction()
 {
-	actionlib::SimpleActionClient<roskst_msgs::NetiiwaCloseAction> ac("/TMSKuka/rqstNetiiwaClose", true);
-	roskst_msgs::NetiiwaCloseGoal gl;
+	actionlib::SimpleActionClient<lbr_kst::NetiiwaCloseAction> ac("/TMSKuka/rqstNetiiwaClose", true);
+	lbr_kst::NetiiwaCloseGoal gl;
 	gl.cl = true;
 	ac.waitForServer(); // have to have this so that action client and server connects
 	ac.sendGoal(gl);
@@ -548,8 +548,8 @@ void KSTUDPServer::iiwaOffAction()
 
 void KSTUDPServer::ptpMotion()
 {
-	roskst_msgs::PTPLineEEFGoal gl;
-	roskst_msgs::GetEEF sgeteef;
+	lbr_kst::PTPLineEEFGoal gl;
+	lbr_kst::GetEEF sgeteef;
 	std::string packpath = ros::package::getPath("roskst");
 	YAML::Node f = YAML::LoadFile(packpath + "/share/config/default.yaml");
  	if(flag_headcntct_recvd_ && flag_headheadref_recvd_ && flag_cntctoffset_recvd_)
@@ -663,7 +663,7 @@ void KSTUDPServer::confirmMsg(std::string msg_cfrm)
 
 void KSTUDPServer::smtServOn()
 {
-	roskst_msgs::SmtSrvoStartEEF srv;
+	lbr_kst::SmtSrvoStartEEF srv;
 	srv.request.a = true;
 	if(srv_client_startSmtServoEEF_.call(srv))
 	{
@@ -673,7 +673,7 @@ void KSTUDPServer::smtServOn()
 
 void KSTUDPServer::smtServOff()
 {
-	roskst_msgs::SmtSrvoStop srv;
+	lbr_kst::SmtSrvoStop srv;
 	srv.request.a = true;
 	if(srv_client_stopSmtServo_.call(srv))
 	{
