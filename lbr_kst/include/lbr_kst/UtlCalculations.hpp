@@ -47,8 +47,4 @@ namespace UtlCalculations{
 
 	std::tuple<std::vector<std::vector<double>>, std::vector<std::vector<double>>, std::vector<std::vector<double>>> svdSim3by3(std::vector<std::vector<double>> A);
 
-	std::vector<double> quat2eul(std::vector<double> q /*x,y,z,w*/);
-
-	geometry_msgs::Quaternion eul2quat(std::vector<double> eul);
-
 };

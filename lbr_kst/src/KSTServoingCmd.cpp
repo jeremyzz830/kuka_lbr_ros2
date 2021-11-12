@@ -143,8 +143,3 @@ void KSTServoingCmd::rqst_NetiiwaClose(const lbr_kst::NetiiwaCloseGoalConstPtr& 
 	srv_action_Netcl_.setSucceeded(result_Netclos_);
 }
 
-
-bool KSTServoingCmd::getflg_TMSrealtimectl()
-{
-	return flg_TMSrealtimectl_;
-}

@@ -50,7 +50,7 @@ public:
 	bool get_EEF(lbr_kst::srv::GetEEF_Request &req, lbr_kst::srv::GetEEF_Response &res);
 	bool smtSrvo_startEEF(lbr_kst::srv::SmtServoStartEEF_Request &req, lbr_kst::srv::SmtServoStartEEF_Response &res);
 	bool smtSrvo_stop(lbr_kst::srv::SmtServoStop_Request &req, lbr_kst::srv::SmtServoStop_Response &res);
-	bool getflg_TMSrealtimectl();
+
 	rclcpp::Publisher pub_oldeef_;
 
 private:
@@ -60,6 +60,7 @@ private:
 	rclcpp_action::Server<lbr_kst::action::PTPJointSpace> srv_action_PTPjs_;
 	rclcpp_action::Server<lbr_kst::action::PTPLineEEF> srv_action_PTPeef_;
 	rclcpp_action::Server<lbr_kst::action::NetiiwaClose> srv_action_Netcl_;
+	
 	lbr_kst::action::PTPJointSpace_Result result_PTPjs_;
 	lbr_kst::action::PTPLineEEF_Result result_PTPeef_;
 	lbr_kst::action::NetiiwaClose_Result result_Netclos_;
@@ -69,6 +70,5 @@ private:
 	rclcpp::Service<lbr_kst::srv::SmtServoStartEEF>::SharedPtr srv_srvc_SmtSrvoStartEEF_;
 	rclcpp::Service<lbr_kst::srv::SmtServoStop>::SharedPtr srv_srvc_SmtSrvoStop_;
 
-	bool flg_TMSrealtimectl_ = false;
 	rclcpp::Publisher pub_flagRealtime_;
 };

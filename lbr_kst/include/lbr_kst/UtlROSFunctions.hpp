@@ -19,6 +19,7 @@
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "sensor_msgs/msg/point_cloud.hpp"
+#include "geometry_msgs/Quaternion.h"
 
 // utility functions, using ROS stuff
 namespace UtlROSFunctions{
@@ -28,4 +29,8 @@ namespace UtlROSFunctions{
 	inline std::string getTimeString();
 
 	void readCalDataYAMLFile(geometry_msgs::TransformStamped& p, const std::string& filename);
+
+	std::vector<double> quat2eul(std::vector<double> q /*x,y,z,w*/);
+
+	geometry_msgs::Quaternion eul2quat(std::vector<double> eul);
 }
