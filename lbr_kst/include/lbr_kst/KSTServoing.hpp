@@ -16,13 +16,6 @@
 #include <vector>
 #include <boost/asio.hpp>
 
-#include "rclcpp/rclcpp.hpp"
-#include "tf2/transform_datatypes.h"
-#include "tf2/LinearMath/Transform.h"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-
-#include "lbr_kst/msg/joint_position.hpp"
-
 using boost::asio::ip::tcp;
 
 struct kKSTServoingRobot{
@@ -84,9 +77,6 @@ private:
     std::string robot_type_;
     int flange_type_;
 
-    tf2::Transform teftool_ = tf2::Transform( // end effector tranform
-    	tf2::Quaternion(0, 0, 0, 1), tf2::Vector3(0.0, 0.0, 0.0)); 
-
 public:
 
     // constructor
@@ -113,8 +103,8 @@ public:
     std::vector<double> servo_send_EEF_getfeedback(std::vector<double> eef); // x y z rz ry rx
 
     // getters
-    lbr_kst::msg::JointPosition get_joint_position();
-    geometry_msgs::msg::TransformStamped get_EEF_position();
+    std::vector<double> get_joint_position();
+    std::vector<double> get_EEF_position();
         
     // networking
     bool net_establish_connection();
@@ -132,6 +122,7 @@ public:
     // KSTServoingDynamicsInverse utl_inverse_dynamics();
     // KSTServoingKinematicsForward utl_forward_kinematics();
     // KSTServoingKinematicsInverse utl_inverse_kinematics();
+    
     KSTServoingDataDH utl_dh_parameters(int robot_type);
     KSTServoingDataInertia utl_inertial_parameters(int robot_type);
 

@@ -11,8 +11,6 @@
 * 
 ************************** */
 
-#include "lbr_kst/KSTServoing.hpp"
-
 #include <math.h>
 #include <string>
 #include <iostream>
@@ -20,26 +18,30 @@
 #include <unistd.h>
 #include <boost/lexical_cast.hpp>
 
-#include "geometry_msgs/msg/transform_stamped.hpp"
-
-#include "lbr_kst/msg/joint_position.hpp"
+#include "lbr_kst/KSTServoing.hpp"
 #include "lbr_kst/UtlFunctions.hpp"
 #include "lbr_kst/UtlCalculations.hpp"
 
+// Check acknowledgement from the robot controller side. Usually used after sending an
+// encoded command to the robot. Not yet used.
 inline bool check_acknowledgement(std::string msg)
-{	//TODO
+{	
+	//TODO
 	// std::string ak = "done";
 	// std::string nak = "nak";
 	return true;
 }
 
-// constructor
+// Class constructor
 KSTServoing::KSTServoing(std::string robot_ip, int robot_type, double h_flange, boost::asio::io_context& io_context) :
 	tcp_sock_(io_context)
 {
+	// Robot parameters
 	ip_ = robot_ip;
 	data_dh_ = KSTServoing::utl_dh_parameters(robot_type);
 	data_I_ = KSTServoing::utl_inertial_parameters(robot_type);
+
+	// Robot type
 	if(robot_type==1){
 		robot_type_ = "LBR7R800";
 		data_dh_.d[6] = data_dh_.d[6] + h_flange;
@@ -52,25 +54,31 @@ KSTServoing::KSTServoing(std::string robot_ip, int robot_type, double h_flange, 
 	else{
 		//TODO
 	}
-	// tcp::endpoint remote_endpoint = tcp::endpoint(tcp::v4(), 9877);
-	tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(robot_ip), 30001);
-	tcp_sock_.connect(remote_endpoint);
-	// ros::Duration(1).sleep();
-	rclcpp::Duration(1);
 
+	// Robot controller communications
+	// tcp::endpoint remote_endpoint = tcp::endpoint(tcp::v4(), 9877); // Test endpoint using localhost
+	tcp::endpoint remote_endpoint = tcp::endpoint(boost::asio::ip::address_v4::from_string(robot_ip), 30001); // Controller endpoint
+	tcp_sock_.connect(remote_endpoint);
+
+	// Wait a bit to secure the connection
+	sleep(1); // C++ sleep from package unistd.h
+
+	// Send connection request
 	boost::system::error_code error;
 	const std::string msg1 = "TFtrans_0.0_0.0_0.0_0.0_0.0_0.0\n";
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 	std::cout << "Tool sent";
 
+	// Receive response
 	size_t lenmsgr1 = tcp_sock_.read_some(boost::asio::buffer(buf_));
 	
-	// ros::Duration(0.5).sleep();
-	rclcpp::Duration(0.5);
+	// Wait a bit to secure the connection
+	sleep(0.5); // C++ sleep from package unistd.h
 
 	std::cout << "Kuka Servo Connection Established.";
 }
 
+// Point to point command in joint space
 bool KSTServoing::PTP_joint_space(std::vector<double> jpos , double relVel)
 {
 	try
@@ -114,8 +122,9 @@ bool KSTServoing::PTP_joint_space(std::vector<double> jpos , double relVel)
 	}
 }
 
-bool KSTServoing::PTP_line_EEF(std::vector<double> epos, double vel)
-{ // vel: mm/sec
+// Point to point command in end-effector Cartesian space
+bool KSTServoing::PTP_line_EEF(std::vector<double> epos, double vel) // vel: mm/sec
+{ 
 	try
 	{
 		boost::system::error_code error;
@@ -139,8 +148,6 @@ bool KSTServoing::PTP_line_EEF(std::vector<double> epos, double vel)
 
 		size_t lenmsgr3 = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 
-
-
 		return true;
 
 	}
@@ -151,6 +158,7 @@ bool KSTServoing::PTP_line_EEF(std::vector<double> epos, double vel)
 	}
 } 
 
+// Direct servoing in EEF cartesian space. Start command (controller receives the command and expects EEF position streams)
 void KSTServoing::servo_direct_cartesian_start()
 {
 	boost::system::error_code error;
@@ -160,6 +168,7 @@ void KSTServoing::servo_direct_cartesian_start()
 	usleep(1500);
 }
 
+// Direct servoing in joint space. Start command (controller receives the command and expects EEF position streams)
 void KSTServoing::servo_direct_joint_start()
 {
 	boost::system::error_code error;
@@ -169,6 +178,7 @@ void KSTServoing::servo_direct_joint_start()
 	usleep(1500);
 }
 
+// Smart servoing in EEF cartesian space. Start command (controller receives the command and expects EEF position streams)
 void KSTServoing::servo_smart_cartesian_start()
 {
 	boost::system::error_code error;
@@ -178,6 +188,7 @@ void KSTServoing::servo_smart_cartesian_start()
 	usleep(1500);
 }
 
+// Stop servoing
 void KSTServoing::servo_stop()
 {
 	boost::system::error_code error;
@@ -186,6 +197,7 @@ void KSTServoing::servo_stop()
 	size_t lenmsgr = tcp_sock_.read_some(boost::asio::buffer(buf_), error);
 }
 
+// Sending the streaming joints to the controller (this need to be after spawning direct/smart servo)
 void KSTServoing::servo_send_joints(std::vector<double> jp)
 {
 	boost::system::error_code error;
@@ -200,6 +212,7 @@ void KSTServoing::servo_send_joints(std::vector<double> jp)
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 }
 
+// Sending the streaming joints and get current joints to/from the controller (this need to be after spawning direct/smart servo)
 std::vector<double> KSTServoing::servo_send_joints_getfeedback(std::vector<double> jp)
 {
 	boost::system::error_code error;
@@ -225,6 +238,7 @@ std::vector<double> KSTServoing::servo_send_joints_getfeedback(std::vector<doubl
 	return jpbk;
 }
 
+// Sending the streaming EEF cartesian position to the controller (this need to be after spawning direct/smart servo)
 void KSTServoing::servo_send_EEF(std::vector<double> eef) // x y z rz ry rx
 {
 	boost::system::error_code error;
@@ -238,6 +252,7 @@ void KSTServoing::servo_send_EEF(std::vector<double> eef) // x y z rz ry rx
 	boost::asio::write(tcp_sock_, boost::asio::buffer(msg1), error);
 }
 
+// Sending the streaming EEF cartesian positions and get current position from/to the controller (this need to be after spawning direct/smart servo)
 std::vector<double> KSTServoing::servo_send_EEF_getfeedback(std::vector<double> eef)  // x y z rz ry rx
 {
 	boost::system::error_code error;
@@ -262,7 +277,8 @@ std::vector<double> KSTServoing::servo_send_EEF_getfeedback(std::vector<double> 
 	return eefbk;
 }
 
-lbr_kst::msg::JointPosition KSTServoing::get_joint_position()
+// get current joint position
+std::vector<double> KSTServoing::get_joint_position()
 {
 	std::string strmsgr;
 	try
@@ -284,18 +300,11 @@ lbr_kst::msg::JointPosition KSTServoing::get_joint_position()
 	}
 	// std::cout << strmsgr.c_str());
 	std::vector<double> vec = UtlFunctions::parseString2DoubleVec(strmsgr);
-	lbr_kst::msg::JointPosition jp;
-	jp.a1 = vec[0];
-	jp.a2 = vec[1];
-	jp.a3 = vec[2];
-	jp.a4 = vec[3];
-	jp.a5 = vec[4];
-	jp.a6 = vec[5];
-	jp.a7 = vec[6];
-	return jp;
+	return vec;
 }
 
-geometry_msgs::msg::TransformStamped KSTServoing::get_EEF_position()
+// get current EEF position
+std::vector<double> KSTServoing::get_EEF_position() // x y z rz ry rx
 {
 	std::string strmsgr;
 	try
@@ -315,16 +324,10 @@ geometry_msgs::msg::TransformStamped KSTServoing::get_EEF_position()
 		throw;
 	}
 	std::vector<double> vec = UtlFunctions::parseString2DoubleVec(strmsgr);
-	geometry_msgs::msg::TransformStamped eef; 
-	eef.transform.translation.x = vec[0];
-	eef.transform.translation.y = vec[1];
-	eef.transform.translation.z = vec[2];
-	std::vector<double> eul(&vec[3],&vec[6]);
-	eef.transform.rotation = UtlCalculations::eul2quat(eul);
-
-	return eef;
+	return vec;
 }
 
+// stop communication and turnoff the controller java application
 void KSTServoing::net_turnoff_server()
 {
 	boost::system::error_code error;
