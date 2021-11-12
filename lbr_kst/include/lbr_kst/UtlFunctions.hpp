@@ -16,22 +16,11 @@
 #include <string>
 #include <vector>
 
-#include "geometry_msgs/msg/pose.hpp"
-#include "geometry_msgs/msg/transform_stamped.hpp"
-#include "sensor_msgs/msg/point_cloud.hpp"
-
 // utility functions
 namespace UtlFunctions{
 
-	constexpr unsigned int cmd_str_int(const char* str, int h = 0);
-
-	void saveRegistrationData(sensor_msgs::PointCloud a,sensor_msgs::PointCloud b, geometry_msgs::Pose c);
-
 	std::string formated_double_2_string(double a, int dec);
-
-	inline std::string getTimeString();
 
 	std::vector<double> parseString2DoubleVec(std::string s);
 
-	void readCalDataYAMLFile(geometry_msgs::TransformStamped& p, const std::string& filename);
 }

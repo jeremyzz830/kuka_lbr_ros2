@@ -11,33 +11,21 @@
 * 
 ************************** */
 
-#include <UtlFunctions.hpp>
-#include <iomanip>
+#pragma once
+
 #include <string>
-#include <sstream>
-#include <fstream>
 #include <vector>
 
+#include "geometry_msgs/msg/pose.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "sensor_msgs/msg/point_cloud.hpp"
 
-// utility functions
+// utility functions, using ROS stuff
+namespace UtlROSFunctions{
 
-std::string UtlFunctions::formated_double_2_string(double a, int dec)
-{
-	std::stringstream stream;
-    stream << std::fixed << std::setprecision(dec) << a;
-    std::string s = stream.str();
-    return s;
-}
+	void saveRegistrationData(sensor_msgs::PointCloud a,sensor_msgs::PointCloud b, geometry_msgs::Pose c);
 
-std::vector<double> UtlFunctions::parseString2DoubleVec(std::string s)
-{
-	std::vector<double> vec;
-	std::string delimiter = "_";
-	size_t pos = 0;
-	while ((pos = s.find(delimiter)) != std::string::npos) 
-	{
-	    vec.push_back(std::stod(s.substr(0, pos)));
-	    s.erase(0, pos + delimiter.length());
-	}
-	return vec;
+	inline std::string getTimeString();
+
+	void readCalDataYAMLFile(geometry_msgs::TransformStamped& p, const std::string& filename);
 }
