@@ -37,13 +37,13 @@ int main(int argc, char * argv[])
   rclcpp::WallRate loop_rate(50);
 
   sensor_msgs::msg::JointState msg;
-    msg.name.push_back("joint_a1");
-    msg.name.push_back("joint_a2");
-    msg.name.push_back("joint_a3");
-    msg.name.push_back("joint_a4");
-    msg.name.push_back("joint_a5");
-    msg.name.push_back("joint_a6");
-    msg.name.push_back("joint_a7");
+    msg.name.push_back("lbr_joint_0");
+    msg.name.push_back("lbr_joint_1");
+    msg.name.push_back("lbr_joint_2");
+    msg.name.push_back("lbr_joint_3");
+    msg.name.push_back("lbr_joint_4");
+    msg.name.push_back("lbr_joint_5");
+    msg.name.push_back("lbr_joint_6");
 
     msg.position.push_back(-1.5810079050729513);
     msg.position.push_back(0.8167376905451679);
