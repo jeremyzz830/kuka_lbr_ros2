@@ -40,17 +40,22 @@ class KSTServoingCmd
 
 public:
 
+	// constructor takes in the robot abstraction KSTServoing object's pointer
 	KSTServoingCmd(KSTServoing& servo);
 	
+	// Actions: mostly used for time consuming commands: point-to-point commands, etc
+	// Closing the connection in the Sunrise Java application is also written as an action
 	void move_PTPJointSpace(const lbr_kst::action::PTPJointSpace_Goal::ConstPtr &goal);
 	void move_PTPLineEEF(const lbr_kst::action::PTPLineEEF_Goal::ConstPtr &goal);
 	void rqst_NetiiwaClose(const lbr_kst::action::NetiiwaClose_Goal::ConstPtr &goal);
 
+	// Services: getting status and start/stop soft realtime commands
 	bool get_joints(lbr_kst::srv::GetJoints_Request &req, lbr_kst::srv::GetJoints_Response &res);
 	bool get_EEF(lbr_kst::srv::GetEEF_Request &req, lbr_kst::srv::GetEEF_Response &res);
 	bool smtSrvo_startEEF(lbr_kst::srv::SmtServoStartEEF_Request &req, lbr_kst::srv::SmtServoStartEEF_Response &res);
 	bool smtSrvo_stop(lbr_kst::srv::SmtServoStop_Request &req, lbr_kst::srv::SmtServoStop_Response &res);
 
+	// A publisher to publish the old eef position (used for control feedback)
 	rclcpp::Publisher pub_oldeef_;
 
 private:
@@ -60,7 +65,7 @@ private:
 	rclcpp_action::Server<lbr_kst::action::PTPJointSpace> srv_action_PTPjs_;
 	rclcpp_action::Server<lbr_kst::action::PTPLineEEF> srv_action_PTPeef_;
 	rclcpp_action::Server<lbr_kst::action::NetiiwaClose> srv_action_Netcl_;
-	
+
 	lbr_kst::action::PTPJointSpace_Result result_PTPjs_;
 	lbr_kst::action::PTPLineEEF_Result result_PTPeef_;
 	lbr_kst::action::NetiiwaClose_Result result_Netclos_;

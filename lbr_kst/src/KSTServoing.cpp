@@ -20,7 +20,6 @@
 
 #include "lbr_kst/KSTServoing.hpp"
 #include "lbr_kst/UtlFunctions.hpp"
-#include "lbr_kst/UtlCalculations.hpp"
 
 // Check acknowledgement from the robot controller side. Usually used after sending an
 // encoded command to the robot. Not yet used.

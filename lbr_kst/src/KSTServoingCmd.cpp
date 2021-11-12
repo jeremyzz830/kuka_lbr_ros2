@@ -56,7 +56,15 @@ KSTServoingCmd::KSTServoingCmd(KSTServoing& servo) :
 
 bool KSTServoingCmd::get_joints(lbr_kst::GetJoints::Request &req, lbr_kst::GetJoints::Response &res)
 {
-	lbr_kst::JointPosition jp = servo_.get_joint_position();
+	std::vector<double> vec = servo_.get_joint_position();
+	lbr_kst::JointPosition jp;
+	jp.a1 = vec[0];
+	jp.a2 = vec[1];
+	jp.a3 = vec[2];
+	jp.a4 = vec[3];
+	jp.a5 = vec[4];
+	jp.a6 = vec[5];
+	jp.a7 = vec[6];
 	res.jp = jp;
 	return true;
 }
@@ -64,7 +72,13 @@ bool KSTServoingCmd::get_joints(lbr_kst::GetJoints::Request &req, lbr_kst::GetJo
 
 bool KSTServoingCmd::get_EEF(lbr_kst::GetEEF::Request &req, lbr_kst::GetEEF::Response &res)
 {
-	geometry_msgs::TransformStamped eef = servo_.get_EEF_position();
+	std::vector<double> vec = servo_.get_EEF_position();
+	geometry_msgs::TransformStamped eef;
+	eef.transform.translation.x = vec[0];
+	eef.transform.translation.y = vec[1];
+	eef.transform.translation.z = vec[2];
+	std::vector<double> eul(&vec[3],&vec[6]);
+	eef.transform.rotation = UtlROSFunctions::eul2quat(eul);
 	res.eef = eef;
 	return true;
 }
@@ -75,7 +89,6 @@ bool KSTServoingCmd::smtSrvo_startEEF(lbr_kst::SmtSrvoStartEEF::Request &req, lb
 	servo_.servo_smart_cartesian_start();
 
 	servo_.flg_realtimectl_ = true;
-	flg_TMSrealtimectl_ = true;
 
 	std_msgs::Int32 msg;
 	msg.data = 1;
@@ -89,7 +102,6 @@ bool KSTServoingCmd::smtSrvo_stop(lbr_kst::SmtSrvoStop::Request &req, lbr_kst::S
 	servo_.servo_stop();
 
 	servo_.flg_realtimectl_ = false;
-	flg_TMSrealtimectl_ = false;
 
 	std_msgs::Int32 msg;
 	msg.data = 0;
