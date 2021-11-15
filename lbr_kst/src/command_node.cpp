@@ -18,15 +18,33 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include "lbr_kst/KSTServoing.hpp"
-#include "lbr_kst/KSTServoingCmd.hpp"
-#include "lbr_kst/UtlCalculations.hpp"
+// #include "lbr_kst/KSTServoingCmd.hpp"
+// #include "lbr_kst/UtlCalculations.hpp"
 
+
+class TestKSTServoing : public rclcpp::Node
+{
+  public:
+    TestKSTServoing()
+    : Node("test_KST_servoing")
+    {
+      std::cout << "Hello World, KST Servoing test node!";
+    }
+};
 
 
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  rclcpp::spin();
+  kKSTServoingRobot r_param;
+	std::string robot_ip = "172.31.1.147";
+	// std::string robot_ip = "127.0.0.1";
+	int robot_type = r_param.LBR7R800;
+	double h_flange = r_param.MEDIEN_FLANSCH_ELEKTRISCH;
+	boost::asio::io_context io_context;
+  KSTServoing servo(robot_ip, robot_type, h_flange, io_context);
+
+  rclcpp::spin(std::make_shared<TestKSTServoing>());
   rclcpp::shutdown();
   return 0;
 }

@@ -12,43 +12,53 @@ find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(Boost REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-set(msg_files
-  "msg/EEFCartesian.msg"
-  "msg/JointPosition.msg"
-  "msg/PointCloudPair.msg"
-)
+# set(msg_files
+#   "msg/EEFCartesian.msg"
+#   "msg/JointPosition.msg"
+#   "msg/PointCloudPair.msg"
+# )
 
-set(srv_files
-  "srv/GetEEF.srv"
-  "srv/GetJoints.srv"
-  "srv/RegisterPntCloud.srv"
-  "srv/SmtServoStartEEF.srv"
-  "srv/SmtServoStop.srv"
-  "srv/SpawnKnmtcsCalculation.srv"
-)
+# set(srv_files
+#   "srv/GetEEF.srv"
+#   "srv/GetJoints.srv"
+#   "srv/RegisterPntCloud.srv"
+#   "srv/SmtServoStartEEF.srv"
+#   "srv/SmtServoStop.srv"
+#   "srv/SpawnKnmtcsCalculation.srv"
+# )
 
-set(action_files
-  "action/NetiiwaClose.action"
-  "action/PTPJointSpace.action"
-  "action/PTPLineEEF.action"
-)
+# set(action_files
+#   "action/NetiiwaClose.action"
+#   "action/PTPJointSpace.action"
+#   "action/PTPLineEEF.action"
+# )
 
-rosidl_generate_interfaces(${PROJECT_NAME}
-  ${msg_files}
-  ${srv_files}
-  ${action_files}
-  DEPENDENCIES geometry_msgs
+# rosidl_generate_interfaces(${PROJECT_NAME}
+#   ${msg_files}
+#   ${srv_files}
+#   ${action_files}
+#   DEPENDENCIES geometry_msgs
+# )
+
+add_library(KSTServoing
+  src/KSTServoing.cpp
+  src/UtlFunctions.cpp
 )
+target_include_directories(KSTServoing PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 add_executable(command_node src/command_node.cpp)
+ament_target_dependencies(command_node rclcpp)
+target_link_libraries(command_node KSTServoing)
+
 target_include_directories(command_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(command_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+# target_compile_features(command_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
 install(TARGETS command_node
   DESTINATION lib/${PROJECT_NAME})
