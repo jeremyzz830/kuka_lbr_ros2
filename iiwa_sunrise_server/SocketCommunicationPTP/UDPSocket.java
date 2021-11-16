@@ -1,4 +1,4 @@
-package ros2API;
+package lbr_iiwa_ros2;
 
 import java.net.BindException;
 import java.net.DatagramPacket;
@@ -7,7 +7,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 
-import ros2API.ISocket;
+import lbr_iiwa_ros2.ISocket;
 
 
 public class UDPSocket implements ISocket{

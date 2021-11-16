@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package ros2API;
+package lbr_iiwa_ros2;
 
 
 import com.kuka.roboticsAPI.deviceModel.LBR;

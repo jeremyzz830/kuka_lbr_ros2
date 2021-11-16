@@ -1,4 +1,4 @@
-package ros2API;
+package lbr_iiwa_ros2;
 
 public interface ISocket {
 	

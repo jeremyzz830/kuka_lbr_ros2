@@ -14,17 +14,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package ros2API;
+package lbr_iiwa_ros2;
 
 // Configuration
 import javax.inject.Inject;
 import javax.inject.Named;
 
 // Implemented classes
-import ros2API.LBR_commander;
-import ros2API.LBR_sensor_reader;
-import ros2API.LBR_status_reader;
-import ros2API.SafetyStateListener;
+import lbr_iiwa_ros2.LBR_commander;
+import lbr_iiwa_ros2.LBR_sensor_reader;
+import lbr_iiwa_ros2.LBR_status_reader;
+import lbr_iiwa_ros2.SafetyStateListener;
 
 import com.kuka.roboticsAPI.applicationModel.RoboticsAPIApplication;
 import com.kuka.roboticsAPI.controllerModel.Controller;

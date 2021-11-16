@@ -1,4 +1,4 @@
-package ros2API;
+package lbr_iiwa_ros2;
 
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-import ros2API.ISocket;
+import lbr_iiwa_ros2.ISocket;
 
 public class TCPSocket implements ISocket{
 	

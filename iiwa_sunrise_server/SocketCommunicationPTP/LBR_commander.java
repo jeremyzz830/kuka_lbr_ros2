@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package ros2API;
+package lbr_iiwa_ros2;
 
 // Implemented classes
-import ros2API.PTPpoint;
+import lbr_iiwa_ros2.PTPpoint;
 
 
 // RoboticsAPI

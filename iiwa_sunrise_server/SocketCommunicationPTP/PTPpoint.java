@@ -1,4 +1,4 @@
-package ros2API;
+package lbr_iiwa_ros2;
 
 
 import com.kuka.roboticsAPI.deviceModel.JointPosition;

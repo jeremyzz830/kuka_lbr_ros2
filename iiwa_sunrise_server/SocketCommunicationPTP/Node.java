@@ -13,11 +13,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package ros2API;
+package lbr_iiwa_ros2;
 
-import ros2API.ISocket;
-import ros2API.TCPSocket;
-import ros2API.UDPSocket;
+import lbr_iiwa_ros2.ISocket;
+import lbr_iiwa_ros2.TCPSocket;
+import lbr_iiwa_ros2.UDPSocket;
 
 public abstract class Node extends Thread{
 	
