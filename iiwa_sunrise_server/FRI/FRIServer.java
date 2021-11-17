@@ -17,7 +17,7 @@ import com.kuka.roboticsAPI.motionModel.controlModeModel.PositionControlMode;
 /**
  * Creates a FRI Session.
  */
-public class LBRServer extends RoboticsAPIApplication
+public class FRIServer extends RoboticsAPIApplication
 {
     private Controller _lbrController;
     private LBR _lbr;
@@ -81,7 +81,7 @@ public class LBRServer extends RoboticsAPIApplication
      */
     public static void main(final String[] args)
     {
-        final LBRServer app = new LBRServer();
+        final FRIServer app = new FRIServer();
         app.runApplication();
     }
 
