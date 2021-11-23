@@ -1,4 +1,4 @@
-// Modified by Joshua Liu, JHU on Nov, 2020
+// Modified by Joshua Liu, 11/16/2021
 // Copyright 2019 Nina Marie Wahl og Charlotte Heggem.
 // Copyright 2019 Norwegian University of Science and Technology.
 //

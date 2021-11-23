@@ -4,10 +4,16 @@
   <name>lbr_bringup</name>
   <version>0.0.0</version>
   <description>LBR launch files.</description>
-  <maintainer email="martin.huber@kcl.ac.uk">mhubii</maintainer>
+  <maintainer email="jsliu@jhu.edu">Joshua Liu</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclpy</depend>
+  <depend>std_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
+  <depend>lbr_msgs</depend>
 
   <exec_depend>lbr_description</exec_depend>
   <exec_depend>lbr_hardware</exec_depend>
