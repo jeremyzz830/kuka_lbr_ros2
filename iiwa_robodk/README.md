@@ -1,20 +1,18 @@
 # RoboDK Driver for KUKA iiwa robots
 
-This folder has nothing to do with ROS.
+This folder has nothing to do with ROS. You need to have RoboDK installed in order to use this package.
 
 ## Prerequisite
 
-### Handguiding Project Setup
-
 If you want to hand-guide the robot with an external switch, you need:
 
-* A Double Pole Single through Switch
+* A Double Pole Single through Switch (I've connected a foot pepal to the robot.)
 * Human robot collaboration option package installed and selected in project
   via stationSetup.cat file | **software tab**
 
-### Instructions (Sunrise Workbench)
+## Instructions
 
-1. Change the Setup Configuration to allow for hand guiding
+1. In Sunrise Workbench, change the Setup Configuration to allow for hand guiding
 
    * Set Enable manual guidance in Automatic mode to false
    * Makesure to change your media Flange to the correct type on your robot
@@ -71,25 +69,24 @@ If you want to hand-guide the robot with an external switch, you need:
    * Your switch should include a **DPST type switch** (if you desire to use the panic aspect of the enable switch you will need a 3 phase button, e.g. on-off-on)
 5. Please first test hand guiding in T1 mode. It should allow you to motion the robot when the enabling switch is triggered.
 6. Create a simple code to test the handguiding feature. See [example code](#example-code) section for an example.
+
+   * Upload [DriverRoboDK.java](/iiwa_robodk/Sunrise/DriverRoboDK.java) to the Sunrise Controller
 7. Synchronize the project onto the controller. It will ask for a reboot of the controller because you made safety configuration changes.
+8. Connect to the robot via RoboDK
+
+   * Run the DriverRoboDK.java application on the robot controller from the SmartPad
+   * In RoboDK, load the RoboDK Driver to connect to the robot
+      * If no driver exists, copy the [apikukaiiwa.py](/iiwa_robodk/RoboDK/apikukaiiwa.py) to RoboDK installation directory
+   * Add a new program with a Pause Instruction, you can rename it to e.g. HandGuiding. You can use [example.rdk](/iiwa_robodk/example.rdk)
+   * Right-click the program to turn on "Run on Rotbot"
+   * Done. Start hand-guiding the robot!
 
 ### Hardware
 
 The handguiding setup needs a DPDT enabling switch because it is being incorporated into the safety connection interface X11 on the cabinet. You will need to wire two test connections to use these safety pins. For example, a 24V dc signal will come from Test output A and Test output B (controller supplied) and need to be connected to Input 1 A and Input 1 B, respectively. The external switch would be between these connections. Then in your safety Configuration file you would set the enabling button to your CIB_SR.1 and do the same for a panic switch if so desired.
 If you desire to implement your enabling switch on your end effector you will need to utilize the ethernet and power connecting wires at the media flange. The following diagrams show the connection pins for the media flange and base connector.
 
-## Setup RoboDK
-
-1. Deploy the [DriverRoboDK.java](/iiwa_robodk/Sunrise/DriverRoboDK.java) to the Sunrise Controller
-2. Load the RoboDK Driver from RoboDK
-   * If no driver exists, copy the [apikukaiiwa.py](/iiwa_robodk/RoboDK/apikukaiiwa.py) to RoboDK installation directory
-3. Open [example.rdk](/iiwa_robodk/example.rdk) from RoboDK or add a new program with a Pause Instruction, you can rename it to e.g. HandGuiding
-4. Right-click the program and select "Run on Robot"
-5. Run the DriverRoboDK Application on KUKA controller from the SmartPad
-6. Connect the Robot from RoboDK, run the Pause Instruction
-7. Done!
-
-## Example Code
+### Example Code
 
 ```Java
 package exampleApplications;
